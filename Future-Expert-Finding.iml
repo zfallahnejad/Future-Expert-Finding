@@ -2,8 +2,17 @@
 <module type="WEB_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/EvaluationResults" />
+      <excludeFolder url="file://$MODULE_DIR$/GoldenSet" />
+      <excludeFolder url="file://$MODULE_DIR$/Input" />
+      <excludeFolder url="file://$MODULE_DIR$/Results" />
+      <excludeFolder url="file://$MODULE_DIR$/lib" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="jsoup-1.8.3" level="project" />
+    <orderEntry type="library" name="lucene-analyzers-common-5.2.1" level="project" />
   </component>
 </module>

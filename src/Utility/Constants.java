@@ -13,11 +13,12 @@ public class Constants {
     public static final String TagGoldenSetDirectory = ".\\GoldenSet\\TagExperts\\";
     public static final String TopicGoldenSetDirectory = ".\\GoldenSet\\TopicExperts\\";
 
+    public static final String EvaluationResultsDirectory = ".\\EvaluationResults\\";
+
+    public static final String DBM_RECENT_Directory = ".\\Results\\DBM\\DBM_RECENT\\";
+    public static final String DBM_ALL_Directory = ".\\Results\\DBM\\DBM_ALL\\";
+
     /*
-
-    public static final String Baseline1MarkovDirectory = ".\\Baseline1\\BaseLine1_Markov\\";
-    public static final String Baseline1RangeDirectory = ".\\Baseline1\\BaseLine1_Range\\";
-
     public static final String BestClassifierDirectory = ".\\BestClassifier\\BestClassifier\\";
     public static final String BestClassifierDirectory_ExpertFindingVersion = ".\\BestClassifier\\BestClassifier_ExpertFindingVersion\\";
     public static final String MYBestClassifierDirectory_ExpertFindingVersion = ".\\BestClassifier\\MYBestClassifier_ExpertFindingVersion\\";
@@ -29,7 +30,6 @@ public class Constants {
     public static final String Baseline2FangV2 = ".\\Baseline2\\Baseline2FangV2\\";
     public static final String Baseline2Fang_ExpertFindingVersion = ".\\Baseline2\\Baseline2Fang_ExpertFindingVersion\\";
 
-    public static final String EvaluationResultsDirectory = ".\\EvaluationResults\\";
     public static final String[] TopTags2 = new String[] { "android"};
 
     public static final String Baseline3Features = ".\\Baseline3\\Features\\";
