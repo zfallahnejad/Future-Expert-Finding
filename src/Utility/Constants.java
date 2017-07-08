@@ -6,6 +6,9 @@ package Utility;
 public class Constants {
 
     public static final String JavaXMLInput = ".\\Input\\JavaPosts.xml";
+    public static final String MalletTopicSimilarity = ".\\Input\\topic_topic.txt";
+    public static final String MalletWordTopic = ".\\Input\\wordtopic.txt";
+
     public static final String IndexDirectory = ".\\JavaIndex_LMJelinekMercerSimilarity_EnglishAnalyzer";
 
     public static final String[] TopTags = new String[]{"java", "android", "swing", "spring", "eclipse", "hibernate", "multithreading", "arrays", "xml", "jsp", "maven", "servlets", "string", "mysql", "spring-mvc", "java-ee", "json", "jpa", "tomcat", "regex", "jdbc", "web-services", "arraylist", "sql", "javascript", "sockets", "generics", "netbeans", "user-interface", "jar", "file", "junit", "database", "google-app-engine", "exception", "html", "rest", "algorithm", "jsf", "gwt", "class", "performance", "image", "applet", "jframe", "jtable", "nullpointerexception", "methods", "linux", "collections", "jpanel"};
@@ -18,6 +21,9 @@ public class Constants {
     public static final String DBM_RECENT_Directory = ".\\Results\\DBM\\DBM_RECENT\\";
     public static final String DBM_ALL_Directory = ".\\Results\\DBM\\DBM_ALL\\";
 
+    public static final String TPBM_Directory = ".\\Results\\TPBM\\";
+
+    public static final String Features_Directory = ".\\Features\\";
     /*
     public static final String BestClassifierDirectory = ".\\BestClassifier\\BestClassifier\\";
     public static final String BestClassifierDirectory_ExpertFindingVersion = ".\\BestClassifier\\BestClassifier_ExpertFindingVersion\\";
@@ -26,11 +32,7 @@ public class Constants {
     public static final String BestClassifier_V_A_Directory = ".\\BestClassifier\\Version_A\\";
     public static final String BestClassifier_V_QA_Directory = ".\\BestClassifier\\Version_QA\\";
 
-    public static final String Baseline2Fang = ".\\Baseline2\\Baseline2Fang\\";
-    public static final String Baseline2FangV2 = ".\\Baseline2\\Baseline2FangV2\\";
     public static final String Baseline2Fang_ExpertFindingVersion = ".\\Baseline2\\Baseline2Fang_ExpertFindingVersion\\";
-
-    public static final String[] TopTags2 = new String[] { "android"};
 
     public static final String Baseline3Features = ".\\Baseline3\\Features\\";
 

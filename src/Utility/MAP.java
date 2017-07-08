@@ -14,16 +14,6 @@ import java.util.HashMap;
  */
 public class MAP {
 
-    /*public static void main(String[] args) throws IOException {
-        MAP m = new MAP();
-
-        for (String tag : Constants.TopTags) {
-            for (int fyear = 2009; fyear < 2016; fyear++) {
-                m.computeMAP(tag,fyear,"");
-            }
-        }
-    }*/
-
     public void computeMAP(String tag, Integer fyear, String fileName) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader(Constants.TagGoldenSetDirectory+ tag + ".txt"));
         ArrayList<String> goldenMeasure = new ArrayList<>();

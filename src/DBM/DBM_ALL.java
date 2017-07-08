@@ -92,6 +92,8 @@ public class DBM_ALL {
                     double score = ScDocs[i].score;
                     //System.out.println("Score: "+score);
                     int eid = Integer.parseInt(d.get("OwnerUserId"));
+                    if (eid == -1)
+                        continue;
                     if (ExprtiseScore.containsKey(eid))
                         ExprtiseScore.put(eid, ExprtiseScore.get(eid) + score);
                     else

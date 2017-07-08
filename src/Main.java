@@ -3,6 +3,7 @@ import DBM.DBM_RECENT;
 import GoldenSet.ExpertUsers;
 import GoldenSet.TopicalExpertUsers;
 import Index.LuceneIndex;
+import TPBM.*;
 import Utility.Constants;
 import Utility.MAP;
 
@@ -20,7 +21,11 @@ public class Main {
         //m.preparation();
 
         //Document based model (DBM)
-        m.DBM_Baseline();
+        //m.DBM_Baseline();
+
+        //Temporal profile based model (TPBM)
+        m.TPBM_Baseline();
+
 
     }
 
@@ -94,21 +99,51 @@ public class Main {
         b.startDBM_ALL();
     }
 
+    /********************************        Baseline2       ******************************************/
+    /***********************  Temporal profile based model (TPBM)   **********************************/
+
+    /**
+     * This function calls fang baseline and evaluate their results
+     */
+    public void TPBM_Baseline() {
+        Popularity p = new Popularity();
+        p.startCalculations();
+
+        P_at_e p2 = new P_at_e();
+        p2.P_at_e_AnswerVersion();
+        p2.P_at_e_QuestionAnswerVersion();
+        p2.TopicUserActivity_V2_Answer();
+
+        PWA p3 = new PWA();
+        p3.startPWACalculations();
+
+        Conservativeness c = new Conservativeness();
+        c.startCalculations("V2");
+
+        TPBM b = new TPBM();
+        b.startFangBaselineCalculations("V1", "V1", "QuestionAnswer");
+
+        String Name = "TPBM_TUAVer_V1_PopVer_V1_PateVer_QuestionAnswer";
+        getMAP(Constants.TPBM_Directory + Name + "\\", Name + "_", Name);
+        getPat(Constants.TPBM_Directory + Name + "\\", Name + "_", 1, Name);
+        getPat(Constants.TPBM_Directory + Name + "\\", Name + "_", 5, Name);
+        getPat(Constants.TPBM_Directory + Name + "\\", Name + "_", 10, Name);
+    }
 
     /********************************        Evaluation       ******************************************/
 
     /**
      * This function evaluate results based on MAP mteric
      *
-     * @param DirName  Result Directory
-     * @param fileName Result FileName
+     * @param DirName              Result Directory
+     * @param fileName             Result FileName
      * @param prediction_directory Prediction Directory
      */
     private void getMAP(String DirName, String fileName, String prediction_directory) {
         MAP m = new MAP();
 
-        PrintStream stdout = System.out;
         try {
+            PrintStream stdout = System.out;
             PrintStream out = new PrintStream(new FileOutputStream(Constants.EvaluationResultsDirectory + prediction_directory + "\\" + fileName + "_MAP.txt"));
             System.setOut(out);
 
@@ -119,6 +154,7 @@ public class Main {
             }
             System.setOut(stdout);
         } catch (IOException e) {
+            System.out.println(Constants.EvaluationResultsDirectory + prediction_directory + "\\" + fileName + "_MAP.txt");
             System.out.println("\n\n\n\nSorry!\n\n\n\n");
         }
     }
@@ -126,15 +162,15 @@ public class Main {
     /**
      * This function evaluate results based on P@n mteric
      *
-     * @param DirName  Result Directory
-     * @param fileName Result FileName
+     * @param DirName              Result Directory
+     * @param fileName             Result FileName
      * @param prediction_directory Prediction Directory
      */
     private void getPat(String DirName, String fileName, int n, String prediction_directory) {
         MAP m = new MAP();
 
-        PrintStream stdout = System.out;
         try {
+            PrintStream stdout = System.out;
             PrintStream out = new PrintStream(new FileOutputStream(Constants.EvaluationResultsDirectory + prediction_directory + "\\" + fileName + "_P_" + n + ".txt"));
             System.setOut(out);
 

@@ -48,7 +48,7 @@ public class DBM_RECENT {
             for (int CurrentYear = 2008; CurrentYear < 2016; CurrentYear++) {
                 PrintStream stdout = System.out;
                 try {
-                    PrintStream out = new PrintStream(new FileOutputStream(Constants.DBM_RECENT_Directory + "DBM_Recent_" + tag + "_FYear_" + (CurrentYear+1) + ".txt"));
+                    PrintStream out = new PrintStream(new FileOutputStream(Constants.DBM_RECENT_Directory + "DBM_Recent_" + tag + "_FYear_" + (CurrentYear + 1) + ".txt"));
                     System.setOut(out);
                 } catch (IOException e) {
                     System.out.println("\n\n\n\nSorry!\n\n\n\n");
@@ -61,7 +61,7 @@ public class DBM_RECENT {
                 Iterator iterator = set.iterator();
                 while (iterator.hasNext()) {
                     Map.Entry expert_score = (Map.Entry) iterator.next();
-                    System.out.println(expert_score.getKey() + "," + tag + "," + (CurrentYear+1) + "," + expert_score.getValue());
+                    System.out.println(expert_score.getKey() + "," + tag + "," + (CurrentYear + 1) + "," + expert_score.getValue());
                 }
                 ExprtiseScore.clear();
                 System.setOut(stdout);
@@ -71,6 +71,7 @@ public class DBM_RECENT {
 
     /**
      * Search for the documents of specific tag
+     *
      * @param query tag
      * @param cyear current year
      */
@@ -92,6 +93,8 @@ public class DBM_RECENT {
                     double score = ScDocs[i].score;
                     //System.out.println("Score: "+score);
                     int eid = Integer.parseInt(d.get("OwnerUserId"));
+                    if (eid == -1)
+                        continue;
                     if (ExprtiseScore.containsKey(eid))
                         ExprtiseScore.put(eid, ExprtiseScore.get(eid) + score);
                     else
