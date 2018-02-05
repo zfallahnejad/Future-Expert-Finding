@@ -1,5 +1,8 @@
 import DBM.DBM_ALL;
 import DBM.DBM_RECENT;
+import FeatureExtraction.TopicFeature;
+import FeatureExtraction.TopicTransition;
+import FeatureExtraction.UserFeature;
 import GoldenSet.ExpertUsers;
 import GoldenSet.TopicalExpertUsers;
 import Index.LuceneIndex;
@@ -10,6 +13,7 @@ import Utility.MAP;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 /**
  * Created by Zohreh on 6/18/2017.
@@ -24,10 +28,15 @@ public class Main {
         //m.DBM_Baseline();
 
         //Temporal profile based model (TPBM)
-        m.TPBM_Baseline();
+        //m.TPBM_Baseline();
 
-
+        // Features
+        //m.CalculateFeatures();
     }
+
+    /********************************
+     * Preparation
+     ******************************************/
 
     private void preparation() {
         //Create a lucene index for java subset of stackoverflow dataset
@@ -103,31 +112,52 @@ public class Main {
     /***********************  Temporal profile based model (TPBM)   **********************************/
 
     /**
-     * This function calls fang baseline and evaluate their results
+     * This function calls Fang baseline and evaluate their results
      */
     public void TPBM_Baseline() {
+        // Calculate popularity of each topic in each year
         Popularity p = new Popularity();
         p.startCalculations();
 
+        // Calculate various version of P(at|e) or P_t(a|e)
+        // Probability of association between a topic a and a candidate e at time t
         P_at_e p2 = new P_at_e();
         p2.P_at_e_AnswerVersion();
         p2.P_at_e_QuestionAnswerVersion();
         p2.TopicUserActivity_V2_Answer();
 
+        // Calculare probability of generation of query word given the topic (Retrieve required values from Mallet LDA outputs)
         PWA p3 = new PWA();
         p3.startPWACalculations();
 
+        // Calculate cnservativeness of each user
         Conservativeness c = new Conservativeness();
-        c.startCalculations("V2");
+        c.startCalculations("V1");
 
         TPBM b = new TPBM();
-        b.startFangBaselineCalculations("V1", "V1", "QuestionAnswer");
+        b.startFangBaselineCalculations("V1", "V1", "Answer");
 
-        String Name = "TPBM_TUAVer_V1_PopVer_V1_PateVer_QuestionAnswer";
-        getMAP(Constants.TPBM_Directory + Name + "\\", Name + "_", Name);
-        getPat(Constants.TPBM_Directory + Name + "\\", Name + "_", 1, Name);
-        getPat(Constants.TPBM_Directory + Name + "\\", Name + "_", 5, Name);
-        getPat(Constants.TPBM_Directory + Name + "\\", Name + "_", 10, Name);
+        getMAP(Constants.TPBM_Directory, "TPBM_", "TPBM");
+        getPat(Constants.TPBM_Directory, "TPBM_", 1, "TPBM");
+        getPat(Constants.TPBM_Directory, "TPBM_", 5, "TPBM");
+        getPat(Constants.TPBM_Directory, "TPBM_", 10, "TPBM");
+    }
+
+    /*********************************************
+     **********     Features       ***************
+     *********************************************/
+
+    private void CalculateFeatures() {
+        //Topic Transition Group of Features(F19-F24)
+        TopicTransition tt = new TopicTransition();
+        tt.startFeatureCalculations();
+
+        TopicFeature tf = new TopicFeature();
+        tf.startFeatureCalculations();
+
+        UserFeature uf = new UserFeature();
+        uf.startFeatureCalculations();
+
     }
 
     /********************************        Evaluation       ******************************************/
@@ -184,5 +214,4 @@ public class Main {
             System.out.println("\n\n\n\nSorry!\n\n\n\n");
         }
     }
-
 }

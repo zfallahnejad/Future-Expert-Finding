@@ -6,6 +6,8 @@ package Utility;
 public class Constants {
 
     public static final String JavaXMLInput = ".\\Input\\JavaPosts.xml";
+    public static final String TagsXMLInput = ".\\Input\\Tags.xml";
+    public static final String BadgesXMLInput = ".\\Input\\Badges.xml";
     public static final String MalletTopicSimilarity = ".\\Input\\topic_topic.txt";
     public static final String MalletWordTopic = ".\\Input\\wordtopic.txt";
 
@@ -24,48 +26,9 @@ public class Constants {
     public static final String TPBM_Directory = ".\\Results\\TPBM\\";
 
     public static final String Features_Directory = ".\\Features\\";
-    /*
-    public static final String BestClassifierDirectory = ".\\BestClassifier\\BestClassifier\\";
-    public static final String BestClassifierDirectory_ExpertFindingVersion = ".\\BestClassifier\\BestClassifier_ExpertFindingVersion\\";
-    public static final String MYBestClassifierDirectory_ExpertFindingVersion = ".\\BestClassifier\\MYBestClassifier_ExpertFindingVersion\\";
-    public static final String MYBestClassifierDirectory = ".\\BestClassifier\\MYBestClassifier\\";
-    public static final String BestClassifier_V_A_Directory = ".\\BestClassifier\\Version_A\\";
-    public static final String BestClassifier_V_QA_Directory = ".\\BestClassifier\\Version_QA\\";
+    public static final String TopicFeatureDirectory = ".\\Features\\TopicFeature\\";
+    public static final String TopicTransitionDirectory = ".\\Features\\TopicTransition\\";
+    public static final String UserFeatureDirectory = ".\\Features\\UserFeature\\";
 
-    public static final String Baseline2Fang_ExpertFindingVersion = ".\\Baseline2\\Baseline2Fang_ExpertFindingVersion\\";
-
-    public static final String Baseline3Features = ".\\Baseline3\\Features\\";
-
-    public static final String Baseline4Results = ".\\Baseline4\\Baseline4Results\\";
-    public static final String Baseline4Results_ExpertFindingVersion = ".\\Baseline4\\Baseline4Results_ExpertFindingVersion\\";
-
-    public static final String TopicTransitionDirectoty = ".\\Features\\TopicTransition\\";
-    public static final String TopicFeatureDirectoty = ".\\Features\\TopicFeature\\";
-    public static final String UserFeatureDirectoty = ".\\Features\\UserFeature\\";
-
-    public static final String RuleBasedDirectoty = ".\\RuleBased\\";
-    public static final String RuleBasedV2Directoty = ".\\RuleBasedV2\\";
-
-    public static final String PointwisePredictionResultDirectoty = ".\\Prediction\\Pointwise\\";
-    public static final String PointwiseResultDirectoty = ".\\Pointwise\\";
-    public static final String PointwiseResult_ExpertFindingVersionDirectoty = ".\\Pointwise_ExpertFindingVersion\\";
-
-    public static final String Baseline4_LastBaselinePredictionResultDirectoty = ".\\Prediction\\Baseline4_LastBaseline\\";
-    public static final String Baseline4_LastResultDirectoty = ".\\Baseline4_LastBaseline\\Baseline4_LastBaseline\\";
-    public static final String Baseline4_LastResultDirectoty_Factor = ".\\Baseline4_LastBaseline\\Baseline4_LastBaseline_Factor\\";
-
-    public static final String PairwisePredictionResultDirectoty = ".\\Prediction\\Pairwise\\";
-    public static final String PairwiseResultDirectoty = ".\\Pairwise\\";
-    public static final String SigmoidPairwiseResultDirectoty = ".\\Pairwise\\SigmoidSVMLight_Pairwise_R_P0_G25\\";
-    public static final String SigmoidPairwiseResultDirectotyT = ".\\Pairwise\\SigmoidSVMLight_Pairwise_R_P0_G25_T50\\";
-    public static final String SigmoidPairwiseResultDirectotyLRV1 = ".\\Pairwise\\SigmoidSVMLight_Pairwise_R_P0_G25_LRV1\\";
-
-    public static final String NaiveBayesDirectory = ".\\NaiveBayes\\";
-    public static final String NaiveBayesPredictionResultDirectory = ".\\Prediction\\NaiveBayes\\";
-    public static final String C5PredictionResultDirectory = ".\\Prediction\\C5\\";
-    public static final String C5Directory = ".\\C5\\";
-
-    public static final String ExpertProfiling = ".\\ExpertProfiling\\";*/
-
-
+    public static final String RuleBasedDirectory = ".\\Results\\RuleBased\\";
 }

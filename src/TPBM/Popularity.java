@@ -53,6 +53,12 @@ public class Popularity {
         }
     }
 
+    /***
+     * |Document with topic "futureTopic" in year "currentYear"| / |Document in year "currentYear"|
+     * @param futureTopic
+     * @param currentYear
+     * @return
+     */
     private double tagPopularity(Integer futureTopic, int currentYear) {
         Integer N_t = u.getDocCount(u.SearchCreationDate(currentYear));
         Integer N_atp1_t = u.getDocCount(

@@ -23,6 +23,7 @@ import java.util.HashSet;
 
 /**
  * Created by Zohreh on 7/8/2017.
+ * Probability of association between a topic a and a candidate e at time t
  */
 public class P_at_e {
     IndexUtility u;
@@ -53,10 +54,12 @@ public class P_at_e {
         P_at_e p = new P_at_e();
         p.P_at_e_AnswerVersion();
         p.P_at_e_QuestionAnswerVersion();
-
         p.TopicUserActivity_V2_Answer();
     }
 
+    /***
+     * For each topic t and year y and user e: |Answer post in topic "t" in year "y" writed by "e"| / |Answer post in topic "t" in year "y"|
+     */
     public void P_at_e_AnswerVersion() {
         try {
             PrintStream stdout = System.out;
@@ -74,6 +77,8 @@ public class P_at_e {
                     int docId = ScDocs[i].doc;
                     Document d = searcher.doc(docId);
                     Integer eid = Integer.parseInt(d.get("OwnerUserId"));
+                    if(eid == -1)
+                        continue;
                     for (IndexableField t : d.getFields("Topics")) {
                         Integer topic = Integer.parseInt(t.stringValue());
                         if(topic == -1)
@@ -113,6 +118,9 @@ public class P_at_e {
         }
     }
 
+    /***
+     * For each topic t and year y and user e: |Post in topic "t" in year "y" writed by "e"| / |Post in topic "t" in year "y"|
+     */
     public void P_at_e_QuestionAnswerVersion() {
         try {
             PrintStream stdout = System.out;
@@ -128,6 +136,8 @@ public class P_at_e {
                     int docId = ScDocs[i].doc;
                     Document d = searcher.doc(docId);
                     Integer eid = Integer.parseInt(d.get("OwnerUserId"));
+                    if(eid == -1)
+                        continue;
                     for (IndexableField t : d.getFields("Topics")) {
                         Integer topic = Integer.parseInt(t.stringValue());
                         if(topic == -1)
@@ -167,6 +177,9 @@ public class P_at_e {
         }
     }
 
+    /***
+     * For each topic t and year y and user e: |Answer post in topic "t" in year "y" writed by "e"|
+     */
     public void TopicUserActivity_V2_Answer(){
         try {
             PrintStream stdout = System.out;

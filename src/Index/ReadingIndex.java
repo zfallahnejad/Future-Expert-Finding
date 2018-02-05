@@ -36,6 +36,7 @@ public class ReadingIndex {
         ReadingIndex s = new ReadingIndex();
         long end = new Date().getTime();
         System.out.println("Searching took " + (end - start) + " milliseconds");
+
     }
 
     public ReadingIndex() {

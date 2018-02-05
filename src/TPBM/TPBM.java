@@ -1,8 +1,10 @@
 package TPBM;
 
+import Index.IndexUtility;
+import Utility.Constants;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexableField;
@@ -10,8 +12,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import Index.IndexUtility;
-import Utility.Constants;
 import org.apache.lucene.store.FSDirectory;
 
 import java.io.*;
@@ -19,44 +19,68 @@ import java.nio.file.Paths;
 import java.util.*;
 
 /**
- * Created by Zohreh on 7/8/2017.
+ * Created by Asus on 1/28/2018.
  */
 public class TPBM {
-    double beta = 0.5;
+    HashMap<Integer, Double> P_at_e;// key= topics from currentYearTopics  ,  values = Probability of having documnets written by eid with specified topics in year t
+    HashMap<String, HashMap<Integer, Double>> All_Pate;// key = "User,Year" , value=( key=Topic , value=Probability of having documnets written by eid with specified topics in year t )
+    HashMap<String, HashMap<Integer, Double>> AllPWAs;// key = Tag , value=(key=Topic , value= P(W|T) )
+    HashMap<Integer, Double> PWA;// key = Topic , value= P(W|T)
+    HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> TopicUserActivity;// key = Year , value=(key=Topic , value=( key=user  value= Count )  )
+    HashSet<Integer> CandidateUsers;
+    Set<Integer> futureYearTopics;
     IndexUtility u;
     IndexReader reader;
     IndexSearcher searcher;
     Analyzer analyzer;
-    HashSet<Integer> CandidateUsers;
-    HashMap<String, Double> Popularity;//key = Topic,CurrentYear , value= Popularity
-    HashMap<String, Double> Conservativeness;//key = eid,CurrentYear , value= Conservativeness
-    HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>> TopicUserActivity;// key = Year , value=(key=Topic , value=( key=user  value= Count )  )
-    Set<Integer> futureYearTopics;
-    HashMap<Integer, Double> PWA;// key = Topic , value= P(W|T)
-    HashMap<String, HashMap<Integer, Double>> AllPWAs;// key = Tag , value=(key=Topic , value= P(W|T) )
+
+    double beta = 0.5;
     double[][] Similarity = new double[50][50];
-    HashMap<String, HashMap<Integer, Double>> All_Pate;// key = "User,Year" , value=( key=Topic , value=Probability of having documnets written by eid with specified topics in year t )
-    HashMap<Integer, Double> P_at_e;// key= topics from currentYearTopics  ,  values = Probability of having documents written by eid with specified topics in year t
+    HashMap<String, Double> Popularity;
+    HashMap<String, Double> Conservativeness;
 
     public TPBM() {
         try {
+            P_at_e = new HashMap<Integer, Double>();
+            All_Pate = new HashMap<String, HashMap<Integer, Double>>();
             AllPWAs = new HashMap<String, HashMap<Integer, Double>>();
+            TopicUserActivity = new HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>>();
+            CandidateUsers = new HashSet<Integer>();
             u = new IndexUtility();
             reader = DirectoryReader.open(FSDirectory.open(Paths.get(Constants.IndexDirectory)));
             searcher = new IndexSearcher(reader);
             analyzer = new EnglishAnalyzer();
-            CandidateUsers = new HashSet<Integer>();
-            Popularity = new HashMap<String, Double>();
             Conservativeness = new HashMap<String, Double>();
-            TopicUserActivity = new HashMap<Integer, HashMap<Integer, HashMap<Integer, Integer>>>();
-            All_Pate = new HashMap<String, HashMap<Integer, Double>>();
-            P_at_e = new HashMap<Integer, Double>();
+            Popularity = new HashMap<String, Double>();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadPateFile(String P_at_e_Version) {//Answer Version
+    private void loadPateFile() {//Answer Version
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(Constants.Features_Directory + "p_A_T_.txt"));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] TC = line.split("\t");
+                //13	2008	44	0.033333333333
+                if (All_Pate.containsKey(TC[0] + "," + TC[1])) {
+                    All_Pate.get(TC[0] + "," + TC[1]).put(Integer.parseInt(TC[2]), Double.parseDouble(TC[3]));
+                } else {
+                    HashMap<Integer, Double> val = new HashMap<Integer, Double>();
+                    val.put(Integer.parseInt(TC[2]), Double.parseDouble(TC[3]));
+                    All_Pate.put(TC[0] + "," + TC[1], val);
+                }
+            }
+            reader.close();
+            //System.out.println(All_Pate.get("13,2008").get(44));//13	2008	44	0.033333333333
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadPateFile(String P_at_e_Version) {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(Constants.Features_Directory + "Pate_" + P_at_e_Version + ".txt"));
             String line = reader.readLine();//OwnerUserId,CurrentYear,Topic,P_at_e
@@ -179,11 +203,6 @@ public class TPBM {
         }
     }
 
-    /**
-     * Select top 2000 user of each topic for current year
-     *
-     * @param futureYear
-     */
     private void selectCandidateUsers(int futureYear) {
         for (Integer topic = 0; topic < 50; topic++) {
             if (TopicUserActivity.get(futureYear - 1).containsKey(topic)) {
@@ -203,15 +222,13 @@ public class TPBM {
     }
 
     public void startFangBaselineCalculations(String TopicUserActivityVersion, String PopularityVersion, String P_at_e_Version) {
+        loadPateFile();// Better
+        //loadPateFile(P_at_e_Version);
+        loadPWAFromFile();
         loadTopicUserActivity(TopicUserActivityVersion);
+        loadSimilarity();
         loadConservativeness(TopicUserActivityVersion);
         loadPopularity(PopularityVersion);
-        loadSimilarity();
-        loadPWAFromFile();
-        loadPateFile(P_at_e_Version);
-
-        String Name = "TPBM_" + "TUAVer_" + TopicUserActivityVersion + "_PopVer_" + PopularityVersion + "_PateVer_" + P_at_e_Version;
-        System.out.println(Name);
 
         for (String tag : Constants.TopTags) {
             PWA = AllPWAs.get(tag);
@@ -220,22 +237,20 @@ public class TPBM {
             for (int futureYear = 2009; futureYear < 2016; futureYear++) {
                 selectCandidateUsers(futureYear);
 
-                getBestClassifierExpertiseProbability(tag, futureYear, Name);
+                getExpertiseProbability(tag, futureYear);
 
                 CandidateUsers.clear();
             }
         }
     }
 
-    private void getBestClassifierExpertiseProbability(String tag, int futureYear, String Name) {
+    private void getExpertiseProbability(String tag, int futureYear) {
         try {
             PrintStream stdout = System.out;
-            PrintStream out = new PrintStream(new FileOutputStream(Constants.TPBM_Directory + Name + "\\" + Name + "_" + tag + "_FYear_" + futureYear + ".txt"));
+            PrintStream out = new PrintStream(new FileOutputStream(Constants.TPBM_Directory + "TPBM_" + tag + "_FYear_" + futureYear + ".txt"));
             System.setOut(out);
 
             for (Integer eid : CandidateUsers) {
-                if (eid == -1)
-                    continue;
                 if (All_Pate.containsKey(eid + "," + (futureYear - 1))) {
                     HashMap<Integer, Double> topics = All_Pate.get(eid + "," + (futureYear - 1));
                     for (Integer topic : topics.keySet()) {
@@ -299,7 +314,16 @@ public class TPBM {
     }
 
     private double tagPopularity(Integer futureTopic, int currentYear) {
-        return Popularity.get(futureTopic + "," + currentYear);
+        if (Popularity.containsKey(futureTopic + "," + currentYear))
+            return Popularity.get(futureTopic + "," + currentYear);
+        else {
+            Integer N_t = u.getDocCount(u.SearchCreationDate(currentYear));
+            Integer N_at1_t = u.getDocCount(
+                    u.BooleanQueryAnd(
+                            u.SearchCreationDate(currentYear), u.SearchTopic(futureTopic)));
+            double output = (1.0 * N_at1_t) / N_t;
+            return output;
+        }
     }
 
     private double getConservativenessProbability(Integer eid, int futureYear) {
@@ -364,18 +388,24 @@ public class TPBM {
         return output;
     }
 
+    /*
+    private double getFutureTopicProbabilityByExpertAndCurrentTopic
+            (Integer futureTopic, Integer currentTopic, int eid, int currentYear) {
+        double cons = Conservativeness.get(eid);
+        double newTagProbability = getProbabilityChoosingNewTag(futureTopic, currentTopic, eid, currentYear);
+        double output;
+        if (cons == 0.0) {
+            output = newTagProbability;
+        } else {
+            double oldTagProbability = getProbabilityChoosingTagFromCurrentYearTags(futureTopic, currentTopic, eid, currentYear);
+            output = ((cons * oldTagProbability) + ((1 - cons) * newTagProbability));
+        }
+        return output;
+    }*/
+
     public static void main(String[] args) {
         TPBM b = new TPBM();
-
-        b.startFangBaselineCalculations("V1", "V1", "QuestionAnswer");
-        //b.startFangBaselineCalculations("V1", "V2", "QuestionAnswer");
-        //b.startFangBaselineCalculations("V2", "V1", "QuestionAnswer");
-        //b.startFangBaselineCalculations("V2", "V2", "QuestionAnswer");
-
-        //b.startFangBaselineCalculations("V1", "V1", "Answer");
-        //b.startFangBaselineCalculations("V1", "V2", "Answer");
-        //b.startFangBaselineCalculations("V2", "V1", "Answer");
-        //b.startFangBaselineCalculations("V2", "V2", "Answer");
+        b.startFangBaselineCalculations("V1", "V1", "Answer");
     }
 
     class UserActivity implements Comparable<UserActivity> {
@@ -393,4 +423,3 @@ public class TPBM {
         }
     }
 }
-
