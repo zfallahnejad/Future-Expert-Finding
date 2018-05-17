@@ -29,6 +29,7 @@ public class Constants {
     public static final String TopicFeatureDirectory = ".\\Features\\TopicFeature\\";
     public static final String TopicTransitionDirectory = ".\\Features\\TopicTransition\\";
     public static final String UserFeatureDirectory = ".\\Features\\UserFeature\\";
+    public static final String TopicSimilarityDirectory = ".\\Features\\TopicSimilarity\\";
 
     public static final String RuleBasedDirectory = ".\\Results\\RuleBased\\";
 }
