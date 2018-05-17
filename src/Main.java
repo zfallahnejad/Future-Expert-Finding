@@ -1,6 +1,7 @@
 import DBM.DBM_ALL;
 import DBM.DBM_RECENT;
 import FeatureExtraction.TopicFeature;
+import FeatureExtraction.TopicSimilarity;
 import FeatureExtraction.TopicTransition;
 import FeatureExtraction.UserFeature;
 import GoldenSet.ExpertUsers;
@@ -158,6 +159,8 @@ public class Main {
         UserFeature uf = new UserFeature();
         uf.startFeatureCalculations();
 
+        TopicSimilarity ts = new TopicSimilarity();
+        ts.startFeatureCalculations();
     }
 
     /********************************        Evaluation       ******************************************/
