@@ -111,14 +111,12 @@ public class TopicSimilarity {
 
     public static void main(String[] args) {
         TopicSimilarity s = new TopicSimilarity();
-        //s.getTopicSimilarity1();
+        s.getTopicSimilarity1();
         s.getTopicSimilarity7();
     }
 
     public void startFeatureCalculations() {
-
         getTopicSimilarity1();//F1
         getTopicSimilarity7();//F2
-
     }
 }

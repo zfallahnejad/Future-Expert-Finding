@@ -32,4 +32,7 @@ public class Constants {
     public static final String TopicSimilarityDirectory = ".\\Features\\TopicSimilarity\\";
 
     public static final String RuleBasedDirectory = ".\\Results\\RuleBased\\";
+
+    public static final String PastSampleUsersDirectory = ".\\ML\\PastLearningSet\\";
+    public static final String NewSampleUsersDirectory = ".\\ML\\NewLearningSet\\";
 }

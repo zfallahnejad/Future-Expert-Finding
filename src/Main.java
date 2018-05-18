@@ -7,6 +7,7 @@ import FeatureExtraction.UserFeature;
 import GoldenSet.ExpertUsers;
 import GoldenSet.TopicalExpertUsers;
 import Index.LuceneIndex;
+import ML.PrepareLearningSet;
 import TPBM.*;
 import Utility.Constants;
 import Utility.MAP;
@@ -33,6 +34,9 @@ public class Main {
 
         // Features
         //m.CalculateFeatures();
+
+        //Prepare for Learning Phase
+        //m.ML_preparation();
     }
 
     /********************************
@@ -161,6 +165,15 @@ public class Main {
 
         TopicSimilarity ts = new TopicSimilarity();
         ts.startFeatureCalculations();
+    }
+
+    /********************************
+     * Preparation for Learning Phase
+     ******************************************/
+
+    private void ML_preparation() {
+        PrepareLearningSet p = new PrepareLearningSet();
+        p.startFeatureCalculations();
     }
 
     /********************************        Evaluation       ******************************************/
