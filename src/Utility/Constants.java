@@ -25,6 +25,8 @@ public class Constants {
 
     public static final String TPBM_Directory = ".\\Results\\TPBM\\";
 
+    public static final String TBM_Directory = ".\\Results\\TBM\\";
+
     public static final String Features_Directory = ".\\Features\\";
     public static final String TopicFeatureDirectory = ".\\Features\\TopicFeature\\";
     public static final String TopicTransitionDirectory = ".\\Features\\TopicTransition\\";

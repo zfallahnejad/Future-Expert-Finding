@@ -9,6 +9,7 @@ import GoldenSet.TopicalExpertUsers;
 import Index.LuceneIndex;
 import ML.PrepareLearningSet;
 import TPBM.*;
+import TBM.*;
 import Utility.Constants;
 import Utility.MAP;
 
@@ -28,6 +29,9 @@ public class Main {
 
         //Document based model (DBM)
         //m.DBM_Baseline();
+
+        //Topic Based model (TBM)
+        //m.TBM_Baseline();
 
         //Temporal profile based model (TPBM)
         //m.TPBM_Baseline();
@@ -113,7 +117,27 @@ public class Main {
         b.startDBM_ALL();
     }
 
-    /********************************        Baseline2       ******************************************/
+    /********************************        Baseline2      ******************************************/
+    /********************************  Topic Based model (TBM)   *************************************/
+
+    /**
+     * This function calls Momtazi baseline and evaluate their results
+     */
+    public void TBM_Baseline() {
+        P_User_Topic p = new P_User_Topic();
+        p.get_P_E_M();
+
+        TBM t = new TBM();
+        t.startFangBaselineCalculations("V1", "Answer");
+
+        getMAP(Constants.TBM_Directory, "TBM_", "TBM");
+        getPat(Constants.TBM_Directory, "TBM_", 1, "TBM");
+        getPat(Constants.TBM_Directory, "TBM_", 5, "TBM");
+        getPat(Constants.TBM_Directory, "TBM_", 10, "TBM");
+    }
+
+
+    /********************************        Baseline3      ******************************************/
     /***********************  Temporal profile based model (TPBM)   **********************************/
 
     /**
@@ -149,20 +173,23 @@ public class Main {
     }
 
     /*********************************************
-     **********     Features       ***************
+     * *********     Features       ***************
      *********************************************/
 
     private void CalculateFeatures() {
-        //Topic Transition Group of Features(F19-F24)
+        // Topic Transition Group of Features(F19-F24)
         TopicTransition tt = new TopicTransition();
         tt.startFeatureCalculations();
 
+        // Topic Feature Group of Features(F3-F11)
         TopicFeature tf = new TopicFeature();
         tf.startFeatureCalculations();
 
+        // User Group of Features(F12-F18)
         UserFeature uf = new UserFeature();
         uf.startFeatureCalculations();
 
+        // Topic Similarity Group of Features(F1 and F2)
         TopicSimilarity ts = new TopicSimilarity();
         ts.startFeatureCalculations();
     }
